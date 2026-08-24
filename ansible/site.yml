@@ -1,0 +1,34 @@
+---
+- name: Deploy homelab services
+  hosts: docker_server
+  become: false
+  tasks:
+    - name: Ensure remote directories exist
+      file:
+        path: "~/homelab/{{ item }}"
+        state: directory
+      loop:
+        - homepage
+        - jellyfin
+        - monitoring
+        - uptime-kuma
+
+    - name: Copy compose files to docker-server
+      copy:
+        src: "files/{{ item }}/compose.yaml"
+        dest: "~/homelab/{{ item }}/compose.yaml"
+      loop:
+        - homepage
+        - jellyfin
+        - monitoring
+        - uptime-kuma
+
+    - name: Deploy each service with Docker Compose
+      command: docker compose up -d
+      args:
+        chdir: "~/homelab/{{ item }}"
+      loop:
+        - homepage
+        - jellyfin
+        - monitoring
+        - uptime-kuma

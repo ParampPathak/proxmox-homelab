@@ -1,0 +1,30 @@
+- Infrastructure:
+    - Proxmox:
+        href: https://PROXMOX-IP:8006
+        description: Virtualization Host
+
+    - Home Assistant:
+        href: http://HOME-ASSISTANT-IP:8123
+        description: Smart Home Platform
+
+    - Pi-hole:
+        href: http://PIHOLE-IP/admin
+        description: DNS and Network Ad Blocking
+
+- Media:
+    - Jellyfin:
+        href: http://DOCKER-SERVER-IP:8096
+        description: Media Server
+
+- Monitoring:
+    - Uptime Kuma:
+        href: http://DOCKER-SERVER-IP:3001
+        description: Service Availability
+
+    - Grafana:
+        href: http://DOCKER-SERVER-IP:3000
+        description: Infrastructure Dashboards
+
+    - Prometheus:
+        href: http://DOCKER-SERVER-IP:9090
+        description: Metrics Collection

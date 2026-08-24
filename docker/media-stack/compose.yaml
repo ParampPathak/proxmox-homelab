@@ -1,0 +1,118 @@
+networks:
+  servarrnetwork:
+    name: servarrnetwork
+    ipam:
+      config:
+        - subnet: 172.39.0.0/24
+services:
+  gluetun:
+    image: qmcgaw/gluetun:latest
+    container_name: gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./gluetun:/gluetun
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.2
+    healthcheck:
+      test: ["CMD-SHELL", "ping -c 1 www.google.com || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+  qbittorrent:
+    image: lscr.io/linuxserver/qbittorrent:latest
+    container_name: qbittorrent
+    network_mode: "service:gluetun"
+    depends_on:
+      gluetun:
+        condition: service_healthy
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+      WEBUI_PORT: 8080
+    volumes:
+      - ./qbittorrent:/config
+      - ./data:/data
+    restart: unless-stopped
+  prowlarr:
+    image: lscr.io/linuxserver/prowlarr:latest
+    container_name: prowlarr
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./prowlarr:/config
+    ports:
+      - "9696:9696"
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.3
+    restart: unless-stopped
+  sonarr:
+    image: lscr.io/linuxserver/sonarr:latest
+    container_name: sonarr
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./sonarr:/config
+      - ./data:/data
+    ports:
+      - "8989:8989"
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.4
+    restart: unless-stopped
+  radarr:
+    image: lscr.io/linuxserver/radarr:latest
+    container_name: radarr
+    environment:
+      PUID: ${PUID}
+      PGID: ${PGID}
+      TZ: ${TZ}
+    volumes:
+      - ./radarr:/config
+      - ./data:/data
+    ports:
+      - "7878:7878"
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.5
+    restart: unless-stopped
+  flaresolverr:
+    image: ghcr.io/flaresolverr/flaresolverr:latest
+    container_name: flaresolverr
+    environment:
+      LOG_LEVEL: info
+      TZ: ${TZ}
+    ports:
+      - "8191:8191"
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.6
+    restart: unless-stopped
+  jellyseerr:
+    image: fallenbagel/jellyseerr:latest
+    container_name: jellyseerr
+    environment:
+      TZ: ${TZ}
+    ports:
+      - "5055:5055"
+    volumes:
+      - ./jellyseerr:/app/config
+    networks:
+      servarrnetwork:
+        ipv4_address: 172.39.0.7
+    restart: unless-stopped

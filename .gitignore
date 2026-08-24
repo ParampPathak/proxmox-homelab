@@ -1,0 +1,49 @@
+# Secrets
+*.env
+.env
+*.key
+*.pem
+*.crt
+*.pfx
+*.p12
+
+# Nginx Proxy Manager persistent data
+docker/nginx-proxy-manager/data/
+docker/nginx-proxy-manager/letsencrypt/
+
+# Application persistent data
+**/data/
+**/config/
+**/logs/
+
+# Databases
+*.sqlite
+*.sqlite3
+*.db
+
+# Media
+**/media/
+**/movies/
+**/tvshows/
+
+# Ansible
+*.retry
+**/vault.yml
+**/vault.yaml
+ansible/inventory.ini
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Media Stack Specific
+docker/media-stack/.env
+docker/media-stack/gluetun/
+docker/media-stack/qbittorrent/
+docker/media-stack/prowlarr/
+docker/media-stack/sonarr/
+docker/media-stack/radarr/
+docker/media-stack/jellyseerr/
+docker/media-stack/data/
