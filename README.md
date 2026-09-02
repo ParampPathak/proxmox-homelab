@@ -466,6 +466,8 @@ proxmox-homelab/
 
 ## Screenshots
 
+## Screenshots
+
 ### Homepage Dashboard
 
 ![Homepage Dashboard](screenshots/Homelab%20Dashboard.png)
@@ -473,6 +475,10 @@ proxmox-homelab/
 ### Trusted HTTPS Reverse Proxy
 
 ![Nginx Proxy Manager](screenshots/Nginx%20Proxy%20Manager%20Reverse%20Proxy%20Example.png)
+
+### Nginx Proxy Manager Dashboard
+
+![Nginx Proxy Manager](screenshots/Nginx.png)
 
 ### Grafana
 
